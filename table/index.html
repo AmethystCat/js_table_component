@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Table component</title>
+	<link rel="stylesheet" href="css/table1.css">
+	<style type="text/css">
+		.tbody {
+			display: table-row-group;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="table" id="table"></div>
+		<!-- <div class="row header green">
+					<div class="cell">姓名</div>
+					<div class="cell">电话</div>
+					<div class="cell">身份证号码</div>
+					<div class="cell">身份证正反面</div>
+					<div class="cell w200">安装地址</div>
+					<div class="cell">提交时间</div>
+					<div class="cell">操作</div>
+				</div>
+				<div class="row">
+					<div class="cell">张三</div>
+					<div class="cell">13211112222</div>
+					<div class="cell">510522199108021234</div>
+					<div class="cell">
+						<img src="/statics/images/rule_banner.png" alt="">
+						<img src="/statics/images/rule_banner.png" alt="">
+					</div>
+					<div class="cell">东大街芷泉段6号3307啊老师的讲课疯狂拉升的jfk垃圾收到付款了</div>
+					<div class="cell">2016-08-01 16:11:00</div>
+					<div class="cell btn-op-w">
+						<button class="btn btn-small btn-default"><i class="iconfont icon-pass"></i>通过</button>
+						<span class="line-divider">|</span>
+						<button class="btn btn-small btn-default"><i class="iconfont icon-refuse"></i>拒绝</button>
+						<span class="line-divider">|</span>
+						<button class="btn btn-small btn-default"><i class="iconfont icon-pdf"></i>下载</button>
+					</div>
+				</div> -->
+	</div>
+</body>
+<script src="../jquery.js"></script>
+<script src="js/table.js"></script>
+<script>
+	var conf = {
+			columns: [
+				{
+					title: 'ID',
+					key: 'id',
+					dataIndex: 'id',
+					render: function() {}
+				},
+				{
+					title: '姓名',
+					key: 'name',
+					dataIndex: 'name',
+					render: function() {}
+				},
+				{
+					title: '身份证号码',
+					key: 'code',
+					dataIndex: 'code',
+					render: function() {}
+				},
+				{
+					title: '操作',
+					key: 'op',
+					render: function(row) {
+						return '';
+					}
+				}
+			]
+	};
+	conf.dataSource = [
+		{id: 1, name: '王二小', code: 123123},
+		{id: 2, name: 'kitty', code: 111111},
+		{id: 3, name: 'T_T', code: 222222},
+		{id: 4, name: '张三', code: 444444}
+	];
+	Table(conf);
+</script>
+</html>
