@@ -5,6 +5,9 @@
 	<title>Table component</title>
 	<link rel="stylesheet" href="css/table1.css">
 	<style type="text/css">
+		.thead {
+			display: table-header-group;
+		}
 		.tbody {
 			display: table-row-group;
 		}
@@ -50,36 +53,38 @@
 				{
 					title: 'ID',
 					key: 'id',
-					dataIndex: 'id',
-					render: function() {}
+					dataIndex: 'id'
 				},
 				{
 					title: '姓名',
 					key: 'name',
-					dataIndex: 'name',
-					render: function() {}
+					dataIndex: 'name'
 				},
 				{
 					title: '身份证号码',
 					key: 'code',
-					dataIndex: 'code',
-					render: function() {}
+					dataIndex: 'code'
+				},
+				{
+					title: '年龄',
+					key: 'age',
+					dataIndex: 'age'
 				},
 				{
 					title: '操作',
 					key: 'op',
-					render: function(row) {
-						return '';
+					render: function(text, row) {
+						return ('<div class="btn-op-w"><button class="btn btn-small btn-default">同意</button><span class="line-divider"></span><button class="btn btn-small btn-default">拒绝</button></div>');
 					}
 				}
 			]
 	};
 	conf.dataSource = [
-		{id: 1, name: '王二小', code: 123123},
-		{id: 2, name: 'kitty', code: 111111},
-		{id: 3, name: 'T_T', code: 222222},
-		{id: 4, name: '张三', code: 444444}
+		{id: 1, name: '王二小', age: 20, code: 123123},
+		{id: 2, name: 'kitty',  age: 23, code: 111111},
+		{id: 3, name: 'T_T',    age: 21, code: 222222},
+		{id: 4, name: '张三',   age: 22, code: 444444}
 	];
-	Table(conf);
+	var t = Table('table', conf);
 </script>
 </html>

@@ -6,33 +6,26 @@
 
 	var doc = document, id = 'getElementById', celem = 'createElement';
 
-	var Table = function(options) {
+	var Table = function(id, options) {
 		var defaults = {
 			columns: [],
 			dataSource: [],
 			loading: false,
 			pagination: {}
 		};
-		var settings = Object.assign({}, defaults, options || {});
+		
+		this.id = id;
 		this.domstr = [];
-		this.init(settings);
+		this.settings = Object.assign({}, defaults, options || {});
+
+		this.init(this.settings);
 	};
 
 	Table.method('init', function(settings) {
-		var domstr_thead = this.thead(settings.columns);
-		// add thead
-		var table = doc[id]('table');
-		table.innerHTML= domstr_thead;
-
-		// add tbody container
-		var tbody_container = doc[celem]('div');
-		tbody_container.className = 'tbody';
-		tbody_container.id = 'tbody';
-		
-		// tbody_container.innerHTML = '<div>暂无数据</div>';
-		var domstr_tbody = this.tbody(settings.columns, settings.dataSource);
-		tbody_container.innerHTML = domstr_tbody;
-		table.appendChild(tbody_container);
+		var domstr_thead = this.thead(settings.columns),
+			domstr_tbody = this.tbody(settings.columns, settings.dataSource),
+			domstr_table = domstr_thead + '<div class="tbody" id="tbody">' + domstr_tbody + '</div>';
+		this.render(this.id, domstr_table);
 	});
 
 	Table.method('thead', function(columns) {
@@ -43,8 +36,8 @@
 		});
 		
 		// add thead container
-		domarr.unshift('<div class="row header green">');
-		domarr.push('</div>');
+		domarr.unshift('<div class="thead" id="thead"><div class="row header green">');
+		domarr.push('</div></div>');
 
 		return domarr.join('');
 	});
@@ -56,19 +49,42 @@
 
 		var domarr = dataSource.map(function(el) {
 			var str = columns.map(function(v) {
-				return '<div class="cell">' + el[v.dataIndex] + '</div>';
+				// columnData：单元格数据；el：当前行数据
+				var columnData = v.dataIndex ? el[v.dataIndex] : '';
+				if (v.render && typeof v.render === 'function') {
+					var r = v.render(columnData, el);
+					if (!r) throw 'error: render function is undefined or it must return something.';
+					return '<div class="cell">' + r + '</div>';	
+				}
+				return '<div class="cell">' + columnData + '</div>';
 			});
+			// 返回表格行dom字符串
 			return '<div class="row">' + str.join('') + '</div>';
 		});
-		console.log(domarr);
 		return domarr.join('');
 	});
 
-	Table.method('render', function() {
-
+	Table.method('refresh', function(data){
+		var newSettings = this.reset(data);
+		this.init(newSettings);
 	});
 
-	window.Table = function(options) {
-		new Table(options);
+	Table.method('render', function(con_id, domstr) {
+		var con = doc[id](con_id),
+			inner = con.innerHTML;
+		if (toString.call(domstr) !== '[object String]') {
+			con.appendChild(domstr);
+			return;
+		}
+		con && (con.innerHTML = domstr);
+	});
+
+	Table.method('reset', function(op){
+		var newSettings = this.settings = Object.assign({}, this.settings, op || {});
+		return newSettings;
+	});
+
+	window.Table = function(id, options) {
+		return new Table(id, options);
 	};
 })();
