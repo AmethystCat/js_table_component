@@ -43,17 +43,19 @@
 	});
 
 	Table.method('tbody', function(columns, dataSource) {
-		var colArr = dataSource,
+		var colArr = columns,
 			data = dataSource;
-		if (!data.length) return;
 
-		var domarr = dataSource.map(function(el) {
+		var domarr = data.map(function(el) {
 			var str = columns.map(function(v) {
 				// columnData：单元格数据；el：当前行数据
 				var columnData = v.dataIndex ? el[v.dataIndex] : '';
 				if (v.render && typeof v.render === 'function') {
 					var r = v.render(columnData, el);
-					if (!r) throw 'error: render function is undefined or it must return something.';
+					if (!r) {
+						console.error('error: render function is undefined or it must return something.');
+						throw 'error: render function is undefined or it must return something.';
+					}
 					return '<div class="cell">' + r + '</div>';	
 				}
 				return '<div class="cell">' + columnData + '</div>';
